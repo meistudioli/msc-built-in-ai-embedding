@@ -53,7 +53,7 @@ export class MscBuiltInAiEmbedding extends HTMLElement {
     // data
     this.#data = {
       controller: '',
-      session: ''
+      embedder: ''
     };
 
     // nodes
@@ -187,7 +187,7 @@ export class MscBuiltInAiEmbedding extends HTMLElement {
   }
 
   destroy() {
-    this.#data.session?.destroy?.();
+    this.#data.embedder?.destroy?.();
   }
 
   async create() {
@@ -197,7 +197,15 @@ export class MscBuiltInAiEmbedding extends HTMLElement {
 
     this.destroy();
 
-    this.#data.session = await window.SemanticEmbedder.create();
+    const embedder = await window.SemanticEmbedder.create({
+      monitor: (m) => {
+        m.addEventListener('downloadprogress', (evt) => {
+          this.#progress(evt);
+        });
+      },
+    });
+
+    this.#data.embedder = embedder;
   }
 
   async embed(data, option = {}) {
@@ -205,11 +213,11 @@ export class MscBuiltInAiEmbedding extends HTMLElement {
       throw new Error(`The current browser does not support the Built-in AI Semantic Embedder API.`);
     }
 
-    if (!this.#data.session?.embed) {
+    if (!this.#data.embedder?.embed) {
       await this.create();
     }
 
-    return this.#data.session.embed(data, option);
+    return this.#data.embedder.embed(data, option);
   }
 
   cosineSimilarity(vecA, vecB) {
