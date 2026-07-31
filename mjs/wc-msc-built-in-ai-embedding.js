@@ -163,7 +163,7 @@ export class MscBuiltInAiEmbedding extends HTMLElement {
     const { loaded, total = 1 } = evt;
     const progress = Math.floor((loaded / total) * 100);
 
-    if (progress === 100) {
+    if (this.status === 'available' || progress === 100) {
       this.toggleAttribute('data-progress', false);
       await this.#statusCheck();
       this.#fireEvent(custumEvents.ready);
@@ -197,6 +197,7 @@ export class MscBuiltInAiEmbedding extends HTMLElement {
 
     this.destroy();
 
+    // temp remove downloadprogress event
     const embedder = await window.SemanticEmbedder.create({
       monitor: (m) => {
         m.addEventListener('downloadprogress', (evt) => {

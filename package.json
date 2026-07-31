@@ -1,6 +1,6 @@
 {
   "name": "msc-built-in-ai-embedding",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "<msc-built-in-ai-embedding /> is a web component based on Chrome Built-in AI Semantic Embedder API. Web developers could use <msc-built-in-ai-embedding /> to generate vector embeddings with EmbeddingGemma and provide vivid features like semantic search or text similarity comparison. <msc-built-in-ai-embedding /> is a non-UI component. But it will provide current status in data-status. That means web developers have maximum creation to build UI through this information.",
   "keywords": [
     "web"
